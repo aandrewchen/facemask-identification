@@ -1,0 +1,14 @@
+.camera-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.rounded-video {
+    border-radius: 15px;
+}
+
+.prediction-container {
+    padding-top: 10px;
+}

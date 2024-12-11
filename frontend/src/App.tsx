@@ -4,7 +4,8 @@ import CameraCapture from "./components/CameraCapture.tsx"; // Import the Camera
 function App() {
   return (
     <>
-      <CameraCapture /> {/* Render CameraCapture component */}
+      <h2>Face Mask Detection</h2>
+      <CameraCapture />
     </>
   );
 }

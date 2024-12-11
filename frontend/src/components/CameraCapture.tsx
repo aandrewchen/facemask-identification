@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import './CameraCapture.css'; // Import the CSS file
 
 const messageDict = {
   incorrect_mask: "Please wear your mask properly!",
@@ -39,8 +40,8 @@ const CameraCapture: React.FC = () => {
     }
   };
 
-  // Function to capture an image from the camera
-  const captureImage = async () => {
+  // Function to capture a frame from the camera
+  const captureFrame = async () => {
     if (videoRef.current) {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -67,25 +68,29 @@ const CameraCapture: React.FC = () => {
 
         const result = await response.json();
         setPrediction(result.prediction as PredictionType);
-
-        // Clear the prediction after 5 seconds
-        setTimeout(() => {
-          setPrediction(null);
-        }, 5000);
       }
     }
   };
 
+  // Start the camera and set interval to capture frames every 1 second
+  useEffect(() => {
+    startCamera();
+    const intervalId = setInterval(captureFrame, 500); // Capture frame every 1 second
+
+    return () => {
+      clearInterval(intervalId); // Clear interval when component unmounts
+      stopCamera();
+    };
+  }, []);
+
   return (
     <div>
-      <h2>Face Mask Detection</h2>
-      <video ref={videoRef} autoPlay></video>
-      <button onClick={startCamera}>Start Camera</button>
-      <button onClick={stopCamera}>Stop Camera</button>
-      <button onClick={captureImage}>Capture Image</button>
+      <div className="camera-container">
+        <video ref={videoRef} autoPlay className="rounded-video"></video>
+      </div>
 
       {prediction && (
-        <div>
+        <div className="prediction-container">
           <p>{messageDict[prediction]}</p>
         </div>
       )}
