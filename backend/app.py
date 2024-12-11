@@ -6,7 +6,6 @@ import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,6 +16,9 @@ CORS(app)  # Enable CORS for all routes
 
 # Load the trained model
 model = load_model('./face_mask_cnn.h5')
+
+# Mapping for the class indices
+class_labels = ["incorrect_mask", "with_mask", "without_mask"]
 
 # Function to process the incoming image
 def prepare_image(img):
@@ -52,7 +54,13 @@ def predict():
 
         # Make the prediction using the trained model
         prediction = model.predict(processed_img)
-        prediction_label = 'Mask' if prediction[0][0] > 0.5 else 'No Mask'
+
+        # Find the index of the class with the highest probability
+        logging.info("Prediction scores: %s", prediction)
+        predicted_class_index = np.argmax(prediction[0])
+
+        # Map the index to the class label
+        prediction_label = class_labels[predicted_class_index]
 
         # Log the prediction
         logging.info("Prediction: %s", prediction_label)

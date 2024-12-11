@@ -1,8 +1,16 @@
 import React, { useRef, useState } from 'react';
 
+const messageDict = {
+  incorrect_mask: "Please wear your mask properly!",
+  with_mask: "Thank you for wearing a mask!",
+  without_mask: "Please wear a mask!"
+};
+
+type PredictionType = keyof typeof messageDict;
+
 const CameraCapture: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [prediction, setPrediction] = useState<string | null>(null);
+  const [prediction, setPrediction] = useState<PredictionType | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
 
   // Function to start the camera
@@ -58,7 +66,7 @@ const CameraCapture: React.FC = () => {
         });
 
         const result = await response.json();
-        setPrediction(result.prediction);
+        setPrediction(result.prediction as PredictionType);
 
         // Clear the prediction after 5 seconds
         setTimeout(() => {
@@ -78,7 +86,7 @@ const CameraCapture: React.FC = () => {
 
       {prediction && (
         <div>
-          <p>Prediction: {prediction}</p>
+          <p>{messageDict[prediction]}</p>
         </div>
       )}
     </div>
