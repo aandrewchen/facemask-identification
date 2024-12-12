@@ -1,11 +1,11 @@
 import "./App.css";
-import CameraCapture from "./components/CameraCapture.tsx"; // Import the CameraCapture component
+import Camera from "./components/Camera.tsx";
 
 function App() {
   return (
     <>
       <h2>Face Mask Detection</h2>
-      <CameraCapture />
+      <Camera />
     </>
   );
 }

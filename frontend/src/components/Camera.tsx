@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import './CameraCapture.css';
+import './Camera.css';
 
 const messageDict = {
   incorrect_mask: "Please wear your mask properly!",
@@ -7,7 +7,7 @@ const messageDict = {
   without_mask: "Please wear a mask!"
 };
 
-const CameraCapture = () => {
+const Camera = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [prediction, setPrediction] = useState<null>(null);
 
@@ -66,13 +66,12 @@ const CameraCapture = () => {
     }
   };
 
-  // Start the camera and set interval to capture frames every 1 second
   useEffect(() => {
     startCamera();
-    const intervalId = setInterval(captureFrame, 500); // Capture frame every 1 second
+    const intervalId = setInterval(captureFrame, 500);
 
     return () => {
-      clearInterval(intervalId); // Clear interval when component unmounts
+      clearInterval(intervalId);
       stopCamera();
     };
   }, []);
@@ -92,4 +91,4 @@ const CameraCapture = () => {
   );
 };
 
-export default CameraCapture;
+export default Camera;
