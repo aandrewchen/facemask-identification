@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './CameraCapture.css'; // Import the CSS file
 
 const messageDict = {
@@ -7,11 +7,9 @@ const messageDict = {
   without_mask: "Please wear a mask!"
 };
 
-type PredictionType = keyof typeof messageDict;
-
-const CameraCapture: React.FC = () => {
+const CameraCapture = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [prediction, setPrediction] = useState<PredictionType | null>(null);
+  const [prediction, setPrediction] = useState<null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
 
   // Function to start the camera
@@ -67,7 +65,7 @@ const CameraCapture: React.FC = () => {
         });
 
         const result = await response.json();
-        setPrediction(result.prediction as PredictionType);
+        setPrediction(result.prediction);
       }
     }
   };
