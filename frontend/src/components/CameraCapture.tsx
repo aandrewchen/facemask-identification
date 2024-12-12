@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import './CameraCapture.css'; // Import the CSS file
+import './CameraCapture.css';
 
 const messageDict = {
   incorrect_mask: "Please wear your mask properly!",
@@ -10,7 +10,6 @@ const messageDict = {
 const CameraCapture = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [prediction, setPrediction] = useState<null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
 
   // Function to start the camera
   const startCamera = () => {
@@ -20,7 +19,6 @@ const CameraCapture = () => {
         .then((stream) => {
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
-            setStream(stream);
           }
         })
         .catch((err) => console.log("Error accessing camera: ", err));
@@ -29,12 +27,10 @@ const CameraCapture = () => {
 
   // Function to stop the camera
   const stopCamera = () => {
-    if (stream) {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
       stream.getTracks().forEach((track) => track.stop());
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
-      }
-      setStream(null);
+      videoRef.current.srcObject = null;
     }
   };
 
